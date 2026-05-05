@@ -1,0 +1,73 @@
+@page
+@model ListPackagesModel
+@{ ViewData["Title"] = "Package Definitions"; }
+
+<h2>Package Definitions <small class="text-muted">(@Model.TotalCount total)</small></h2>
+
+<a asp-page="/AddPackage" class="btn btn-primary mb-3">➕ Add New</a>
+
+@if (Model.Packages.Count == 0)
+{
+    <div class="alert alert-info">No package definitions found.</div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-striped table-sm">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Product Name</th>
+                    <th>Manufacturer</th>
+                    <th>Product Code</th>
+                    <th>Package Code</th>
+                    <th>Description</th>
+                    <th>Created</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var p in Model.Packages)
+                {
+                    <tr>
+                        <td>@p.PackageDefinitionId</td>
+                        <td>@p.ProductName</td>
+                        <td>@p.ProductManufacturer</td>
+                        <td><code>@p.ProductCode</code></td>
+                        <td><code>@p.PackageCode</code></td>
+                        <td>@p.Description</td>
+                        <td>@p.CreatedOn.ToString("yyyy-MM-dd HH:mm")</td>
+                        <td>
+                            <form method="post" asp-page-handler="Delete" style="display:inline">
+                                <input type="hidden" name="id" value="@p.PackageDefinitionId" />
+                                <input type="hidden" name="pageNumber" value="@Model.PageNumber" />
+                                <button type="submit" class="btn btn-sm btn-outline-danger"
+                                        onclick="return confirm('Delete package #@p.PackageDefinitionId?')">🗑</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    @if (Model.TotalPages > 1)
+    {
+        <nav>
+            <ul class="pagination">
+                <li class="page-item @(Model.PageNumber <= 1 ? "disabled" : "")">
+                    <a class="page-link" asp-page="/ListPackages" asp-route-pageNumber="@(Model.PageNumber - 1)">Previous</a>
+                </li>
+                @for (int i = 1; i <= Model.TotalPages; i++)
+                {
+                    <li class="page-item @(i == Model.PageNumber ? "active" : "")">
+                        <a class="page-link" asp-page="/ListPackages" asp-route-pageNumber="@i">@i</a>
+                    </li>
+                }
+                <li class="page-item @(Model.PageNumber >= Model.TotalPages ? "disabled" : "")">
+                    <a class="page-link" asp-page="/ListPackages" asp-route-pageNumber="@(Model.PageNumber + 1)">Next</a>
+                </li>
+            </ul>
+        </nav>
+    }
+}

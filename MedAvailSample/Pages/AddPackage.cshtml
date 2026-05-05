@@ -1,0 +1,72 @@
+@page
+@model AddPackageModel
+@{ ViewData["Title"] = "Add Package Definition"; }
+
+<h2>Add Package Definition</h2>
+
+@if (TempData["Success"] is string msg)
+{
+    <div class="alert alert-success">@msg</div>
+}
+
+<div asp-validation-summary="All" class="text-danger"></div>
+
+<form method="post" class="col-md-8">
+    <div class="mb-3">
+        <label class="form-label">Product Name</label>
+        <div class="input-group">
+            <input asp-for="Package.ProductName" class="form-control" id="Package_ProductName" />
+            <button type="button" class="btn btn-outline-secondary" onclick="randomize('Package_ProductName', productNames)">🎲</button>
+        </div>
+        <span asp-validation-for="Package.ProductName" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Manufacturer</label>
+        <div class="input-group">
+            <input asp-for="Package.ProductManufacturer" class="form-control" id="Package_ProductManufacturer" />
+            <button type="button" class="btn btn-outline-secondary" onclick="randomize('Package_ProductManufacturer', manufacturers)">🎲</button>
+        </div>
+        <span asp-validation-for="Package.ProductManufacturer" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Product Code</label>
+        <div class="input-group">
+            <input asp-for="Package.ProductCode" class="form-control" id="Package_ProductCode" />
+            <button type="button" class="btn btn-outline-secondary" onclick="randomize('Package_ProductCode', null, randomNDC)">🎲</button>
+        </div>
+        <span asp-validation-for="Package.ProductCode" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Package Code</label>
+        <div class="input-group">
+            <input asp-for="Package.PackageCode" class="form-control" id="Package_PackageCode" />
+            <button type="button" class="btn btn-outline-secondary" onclick="randomize('Package_PackageCode', null, randomBarcode)">🎲</button>
+        </div>
+        <span asp-validation-for="Package.PackageCode" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Description</label>
+        <div class="input-group">
+            <input asp-for="Package.Description" class="form-control" id="Package_Description" />
+            <button type="button" class="btn btn-outline-secondary" onclick="randomize('Package_Description', descriptions)">🎲</button>
+        </div>
+        <span asp-validation-for="Package.Description" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a asp-page="/ListPackages" class="btn btn-secondary ms-2">Back</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/randomizer.js"></script>
+    <script>
+        // Auto-populate all fields with random placeholder values on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            setPlaceholder('Package_ProductName', productNames);
+            setPlaceholder('Package_ProductManufacturer', manufacturers);
+            setPlaceholder('Package_ProductCode', null, randomNDC);
+            setPlaceholder('Package_PackageCode', null, randomBarcode);
+            setPlaceholder('Package_Description', descriptions);
+        });
+    </script>
+}
