@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using MedAvailSample.Data;
@@ -79,7 +79,7 @@ public class AddPackageModel(MedAvailDbContext db, ILogger<AddPackageModel> logg
             throw new ArgumentException($"Unknown lookup table: {table}");
 
         var result = await db.Database
-            .SqlQueryRaw<int>($"SELECT TOP 1 [{column}] AS [Value] FROM [dbo].[{table}]")
+            .SqlQueryRaw<int>($"SELECT \"{column}\" AS \"Value\" FROM \"public\".\"{table}\" LIMIT 1")
             .FirstOrDefaultAsync();
         return result;
     }

@@ -1,9 +1,10 @@
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MedAvailSample.Models;
 
-[Table("package_definition")]
+[Table("package_definition", Schema = "public")]
 public class PackageDefinition
 {
     [Key]

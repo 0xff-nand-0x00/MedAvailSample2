@@ -1,10 +1,12 @@
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using MedAvailSample.Data;
+
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<MedAvailDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("MedAvailDb")));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("MedAvailDb")));
 
 builder.Services.AddRazorPages();
 
